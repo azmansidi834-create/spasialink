@@ -10,10 +10,12 @@
     <style>
         :root {
             --teal-overlay: rgba(28, 124, 116, 0.4);
-            --ink-overlay: rgba(16, 27, 45, 0.6);
+            --ink-overlay: rgba(16, 27, 45, 0.8);
+            --ink: #101B2D;
             --white: #FFFFFF;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --signal: #FF5A38;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --font-display: 'Space Grotesk', sans-serif;
             --font-body: 'IBM Plex Sans', sans-serif;
         }
@@ -24,27 +26,35 @@
             padding: 0;
         }
 
+        /* Mengaktifkan scroll dan mengatur warna dasar web menjadi gelap */
         body, html {
-            height: 100%;
             font-family: var(--font-body);
             color: var(--white);
-            overflow: hidden; /* Mencegah scroll agar persis seperti referensi */
+            background-color: var(--ink);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* Fullscreen Hero Background */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        /* ================= HERO SECTION ================= */
         .hero-section {
             position: relative;
             width: 100vw;
             height: 100vh;
-            /* Menggunakan gambar perkotaan/tata ruang yang diberi overlay warna teal khas SpasiaLink */
-            background: linear-gradient(var(--teal-overlay), var(--ink-overlay)), url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            min-height: 800px;
+            /* Gambar tata ruang kota malam hari yang merepresentasikan node/data spasial */
+            background: linear-gradient(var(--teal-overlay), var(--ink-overlay)), url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 32px 48px;
+            padding: 32px 0 48px 0;
         }
 
-        /* Top Navigation */
         nav {
             display: flex;
             justify-content: space-between;
@@ -60,10 +70,9 @@
             text-transform: uppercase;
         }
 
-        /* Pill Menu */
         .menu-container {
             display: flex;
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
@@ -83,23 +92,16 @@
 
         .menu-link.active {
             background: var(--white);
-            color: #101B2D;
+            color: var(--ink);
         }
 
         .menu-link:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-right {
-            display: flex;
-            gap: 16px;
-            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .btn-menu {
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             color: var(--white);
             padding: 12px 24px;
@@ -113,12 +115,11 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Center Content */
         .hero-center {
             text-align: center;
             max-width: 900px;
             margin: 0 auto;
-            transform: translateY(-5vh); /* Sedikit naik untuk memberi ruang pada kartu bawah */
+            transform: translateY(-5vh);
         }
 
         .hero-center h1 {
@@ -138,13 +139,12 @@
             opacity: 0.9;
         }
 
-        /* Main CTA Button */
         .btn-main {
             display: inline-flex;
             align-items: center;
             gap: 12px;
             background: var(--white);
-            color: #101B2D;
+            color: var(--ink);
             padding: 8px 8px 8px 24px;
             border-radius: 99px;
             text-decoration: none;
@@ -158,7 +158,7 @@
         }
 
         .btn-arrow {
-            background: #0066FF; /* Biru cerah seperti referensi */
+            background: var(--signal);
             color: var(--white);
             width: 36px;
             height: 36px;
@@ -168,7 +168,6 @@
             align-items: center;
         }
 
-        /* Glassmorphism Bottom Cards */
         .bottom-cards {
             display: flex;
             justify-content: space-between;
@@ -178,7 +177,7 @@
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
@@ -186,7 +185,6 @@
             padding: 32px;
             width: 100%;
             max-width: 420px;
-            box-shadow: 0 24px 48px rgba(0,0,0,0.1);
         }
 
         .glass-card .icon-box {
@@ -203,14 +201,14 @@
         .glass-card .icon-box svg {
             width: 20px;
             height: 20px;
-            fill: #101B2D;
+            fill: var(--ink);
         }
 
         .glass-card h3 {
             font-family: var(--font-display);
             font-size: 24px;
             font-weight: 500;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .glass-card p {
@@ -219,84 +217,349 @@
             opacity: 0.85;
         }
 
+        /* ================= GENERAL SECTION STYLES ================= */
+        section.page-section {
+            padding: 120px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-tag {
+            font-family: var(--font-display);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #1C7C74;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 500;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            max-width: 800px;
+        }
+
+        .section-desc {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 64px;
+        }
+
+        /* ================= VS SECTION (PROBLEM-SOLUTION) ================= */
+        .vs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .vs-card {
+            padding: 48px;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .vs-card.them {
+            background: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.6);
+        }
+
+        .vs-card.us {
+            background: rgba(28, 124, 116, 0.1); /* Teal tint */
+            border-color: rgba(28, 124, 116, 0.4);
+        }
+
+        .vs-card h4 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+
+        .vs-card ul {
+            list-style: none;
+        }
+
+        .vs-card ul li {
+            margin-bottom: 16px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .vs-card ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: inherit;
+        }
+
+        .vs-card.us ul li::before {
+            color: var(--signal);
+        }
+
+        /* ================= SEGMENT SECTION ================= */
+        .segment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .segment-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 32px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .segment-card:hover {
+            border-color: #1C7C74;
+            transform: translateY(-5px);
+        }
+
+        .seg-num {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: #1C7C74;
+            margin-bottom: 16px;
+        }
+
+        .segment-card h4 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .segment-card p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+        }
+
+        /* ================= PILLARS SECTION ================= */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .pillar-card h1.big-num {
+            font-family: var(--font-display);
+            font-size: 80px;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+
+        .pillar-card h4 {
+            font-family: var(--font-display);
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .pillar-card p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* ================= CTA FOOTER ================= */
+        .cta-section {
+            background: linear-gradient(180deg, var(--ink) 0%, #080D17 100%);
+            padding: 120px 0 60px 0;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 5vw, 64px);
+            margin-bottom: 32px;
+        }
+
+        .footer-bottom {
+            margin-top: 100px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* RESPONSIVE */
         @media (max-width: 900px) {
-            .hero-section {
-                padding: 24px;
-                overflow-y: auto;
-            }
-            .menu-container {
-                display: none; /* Sembunyikan menu pill di mobile */
-            }
-            .bottom-cards {
-                flex-direction: column;
-                align-items: center;
-            }
-            .glass-card {
-                max-width: 100%;
-            }
+            .container { padding: 0 24px; }
+            .hero-section { height: auto; min-height: 100vh; }
+            .menu-container { display: none; }
+            .bottom-cards { flex-direction: column; align-items: center; }
+            .glass-card { max-width: 100%; }
+            .vs-grid, .pillars-grid { grid-template-columns: 1fr; }
+            .hero-center { transform: none; margin-top: 48px; margin-bottom: 48px; }
+            .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
         }
     </style>
 </head>
 <body>
 
+    <!-- HERO SECTION -->
     <section class="hero-section">
-        
-        <!-- Navbar Area -->
-        <nav>
+        <nav class="container">
             <div class="logo">SPASIALINK</div>
             
             <div class="menu-container">
                 <a href="#" class="menu-link active">Beranda</a>
-                <a href="#" class="menu-link">Solusi</a>
-                <a href="#" class="menu-link">Segmen</a>
-                <a href="#" class="menu-link">Tentang Kami</a>
+                <a href="#solusi" class="menu-link">Solusi</a>
+                <a href="#segmen" class="menu-link">Segmen Target</a>
+                <a href="#pilar" class="menu-link">Pendekatan</a>
             </div>
 
             <div class="nav-right">
-                <button class="btn-menu">Buka Menu</button>
+                <button class="btn-menu">Mulai Proyek</button>
             </div>
         </nav>
 
-        <!-- Center Main Content -->
-        <div class="hero-center">
+        <div class="container hero-center">
             <h1>Spasial yang bisa dipahami, bukan cuma dipetakan.</h1>
-            <p>Solusi spasial yang menerjemahkan data menjadi cerita visual yang jelas, handal, dan langsung bisa ditindaklanjuti untuk bisnis Anda.</p>
-            <a href="#" class="btn-main">
-                Mari Bicara Solusi Spasial
+            <p>SpasiaLink menerjemahkan data geospasial yang rumit menjadi cerita visual yang jelas dan langsung bisa ditindaklanjuti untuk pengambil keputusan.</p>
+            <a href="#solusi" class="btn-main">
+                Jelajahi Solusi Kami
                 <div class="btn-arrow">
-                    <!-- Icon Arrow Up Right -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <div class="container bottom-cards">
+            <div class="glass-card">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>Penerjemah Data</h3>
+                <p>Mengubah output GIS teknis jadi narasi visual yang dipahami orang non-GIS dalam satu kali baca.</p>
+            </div>
+
+            <div class="glass-card" style="padding-top: 48px;">
+                <h3>Dari Data ke Keputusan</h3>
+                <p>Kami tidak berhenti di penyerahan file koordinat. Kami mengantar Anda hingga tahu langkah strategis selanjutnya.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE GAP / PROBLEM SOLUTION SECTION -->
+    <section id="solusi" class="page-section">
+        <div class="container">
+            <span class="section-tag">Peta Persaingan</span>
+            <h2 class="section-title">Mayoritas vendor bicara ke teknisi. Ruang kosongnya ada di sisi keputusan.</h2>
+            <p class="section-desc">Hampir tidak ada yang secara eksplisit menjual kemampuan menerjemahkan temuan spasial ke bahasa pengambil keputusan bisnis. Di sinilah kami mengambil peran.</p>
+
+            <div class="vs-grid">
+                <div class="vs-card them">
+                    <h4>Konsultan GIS Konvensional</h4>
+                    <ul>
+                        <li>Menjual akurasi & peralatan (drone, LiDAR)</li>
+                        <li>Output: shapefile, peta digital, laporan tebal</li>
+                        <li>Bahasa GIS, untuk audiens yang paham GIS</li>
+                        <li>Selesai saat file dikirim ke klien</li>
+                    </ul>
+                </div>
+                <div class="vs-card us">
+                    <h4 style="color: var(--signal);">SpasiaLink</h4>
+                    <ul>
+                        <li>Menjual kejelasan & arah keputusan</li>
+                        <li>Output: narasi visual, dashboard, materi presentasi</li>
+                        <li>Bahasa manusia, untuk direksi/kepala dinas</li>
+                        <li>Selesai saat klien tahu langkah operasional selanjutnya</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEGMENT SECTION -->
+    <section id="segmen" class="page-section" style="background: rgba(255,255,255,0.02);">
+        <div class="container">
+            <span class="section-tag">Target Audiens</span>
+            <h2 class="section-title">Satu positioning, untuk lintas sektor yang membutuhkan insight lokasi.</h2>
+            
+            <div class="segment-grid" style="margin-top: 48px;">
+                <div class="segment-card">
+                    <div class="seg-num">SEGMEN 01</div>
+                    <h4>Startup & UMKM</h4>
+                    <p>"Spasial-as-a-service" yang terjangkau, cepat, dan langsung bisa dipakai untuk keputusan titik ekspansi operasional tanpa harus bangun tim GIS sendiri.</p>
+                </div>
+                <div class="segment-card">
+                    <div class="seg-num">SEGMEN 02</div>
+                    <h4>Developer Properti</h4>
+                    <p>Insight lokasi yang diringkas secara visual, siap dibawa langsung ke rapat komite akuisisi lahan atau pencarian investor.</p>
+                </div>
+                <div class="segment-card">
+                    <div class="seg-num">SEGMEN 03</div>
+                    <h4>Instansi Publik / Pemda</h4>
+                    <p>Data tata ruang diubah menjadi materi presentasi yang lebih cepat disetujui dan lebih mudah dipertanggungjawabkan ke publik.</p>
+                </div>
+                <div class="segment-card">
+                    <div class="seg-num">SEGMEN 04</div>
+                    <h4>Korporasi (Riset/CSR)</h4>
+                    <p>Dari pendataan lapangan menjadi laporan matang yang langsung dipahami jajaran direksi, tanpa butuh penerjemah internal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PILLARS SECTION -->
+    <section id="pilar" class="page-section">
+        <div class="container">
+            <span class="section-tag">Cara Kerja Kami</span>
+            <h2 class="section-title">Tiga pilar yang membedakan SpasiaLink dari vendor lainnya.</h2>
+            
+            <div class="pillars-grid" style="margin-top: 64px;">
+                <div class="pillar-card">
+                    <h1 class="big-num">01</h1>
+                    <h4>Penerjemah, Bukan Pemroses Data</h4>
+                    <p>Kami menyaring ribuan baris atribut geografis menjadi satu halaman insight visual yang berbunyi jelas.</p>
+                </div>
+                <div class="pillar-card">
+                    <h1 class="big-num">02</h1>
+                    <h4>Satu Pendekatan Multisektor</h4>
+                    <p>Gabungan antara disiplin riset urban, desain, dan analisis data dapat diaplikasikan mulai dari isu tata kota hingga strategi bisnis swasta.</p>
+                </div>
+                <div class="pillar-card">
+                    <h1 class="big-num">03</h1>
+                    <h4>Tim Agile</h4>
+                    <p>Struktur ramping yang bergerak cepat merespons kebutuhan klien, menyesuaikan pendekatan tanpa lapisan birokrasi yang kaku.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FOOTER -->
+    <footer class="cta-section">
+        <div class="container">
+            <h2>Punya proyek atau butuh insight lokasi?</h2>
+            <a href="#" class="btn-main" style="margin-top: 16px;">
+                Jadwalkan Konsultasi Gratis
+                <div class="btn-arrow" style="background: var(--teal);">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="7" y1="17" x2="17" y2="7"></line>
                         <polyline points="7 7 17 7 17 17"></polyline>
                     </svg>
                 </div>
             </a>
-        </div>
 
-        <!-- Bottom Glassmorphism Cards -->
-        <div class="bottom-cards">
-            
-            <!-- Left Card -->
-            <div class="glass-card">
-                <div class="icon-box">
-                    <!-- Icon Data/Map -->
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <h3>Penerjemah Data</h3>
-                <p>Mengubah output GIS yang teknis jadi narasi visual yang dipahami orang non-GIS dalam satu kali baca. Membawa Anda dari raw data langsung ke titik keputusan.</p>
+            <div class="footer-bottom">
+                <div>&copy; 2026 SpasiaLink. Hak Cipta Dilindungi.</div>
+                <div>Memetakan Cerita, Bukan Sekadar Koordinat.</div>
             </div>
-
-            <!-- Right Card -->
-            <div class="glass-card" style="padding-top: 48px;">
-                <h3>Dampak Lintas Sektor</h3>
-                <p>Dari Startup hingga Pemerintah Daerah, pendekatan riset urban kami digunakan secara konsisten untuk mempercepat validasi kebijakan dan keputusan investasi lahan.</p>
-            </div>
-
         </div>
-
-    </section>
+    </footer>
 
 </body>
 </html>
