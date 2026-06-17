@@ -9,13 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink: #101B2D;
-            --ink-soft: #46536C;
-            --paper: #F8F9F4;
-            --paper-deep: #E1E6DA;
-            --teal: #1C7C74;
-            --signal: #FF5A38;
+            --teal-overlay: rgba(28, 124, 116, 0.4);
+            --ink-overlay: rgba(16, 27, 45, 0.6);
             --white: #FFFFFF;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
             --font-display: 'Space Grotesk', sans-serif;
             --font-body: 'IBM Plex Sans', sans-serif;
         }
@@ -26,490 +24,279 @@
             padding: 0;
         }
 
-        body {
+        body, html {
+            height: 100%;
             font-family: var(--font-body);
-            background-color: var(--paper);
-            color: var(--ink);
-            line-height: 1.6;
-            overflow-x: hidden;
+            color: var(--white);
+            overflow: hidden; /* Mencegah scroll agar persis seperti referensi */
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 16px;
+        /* Fullscreen Hero Background */
+        .hero-section {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            /* Menggunakan gambar perkotaan/tata ruang yang diberi overlay warna teal khas SpasiaLink */
+            background: linear-gradient(var(--teal-overlay), var(--ink-overlay)), url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 32px 48px;
         }
 
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Navbar */
+        /* Top Navigation */
         nav {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 24px 0;
-            z-index: 100;
-        }
-        .nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--white);
+            z-index: 10;
         }
+
         .logo {
             font-family: var(--font-display);
-            font-weight: 700;
             font-size: 24px;
-            letter-spacing: -0.5px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        .nav-links {
-            display: none;
-            gap: 32px;
+
+        /* Pill Menu */
+        .menu-container {
+            display: flex;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 99px;
+            padding: 4px;
+        }
+
+        .menu-link {
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 99px;
             font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-        @media (min-width: 768px) {
-            .nav-links { display: flex; }
+
+        .menu-link.active {
+            background: var(--white);
+            color: #101B2D;
         }
-        .btn {
-            background: var(--ink);
+
+        .menu-link:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn-menu {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
             color: var(--white);
             padding: 12px 24px;
             border-radius: 99px;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-            border: none;
+            font-size: 14px;
             cursor: pointer;
-        }
-        .btn:hover {
-            background: var(--teal);
-        }
-        .btn-light {
-            background: var(--white);
-            color: var(--ink);
-        }
-        .btn-light:hover {
-            background: var(--paper-deep);
+            transition: all 0.3s ease;
         }
 
-        /* Hero Section */
-        .hero {
-            position: relative;
-            padding-top: 120px;
-            padding-bottom: 180px;
-            background: linear-gradient(rgba(16, 27, 45, 0.4), rgba(16, 27, 45, 0.7)), url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1920&q=80') center/cover;
-            border-radius: 0 0 48px 48px;
-            color: var(--white);
+        .btn-menu:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Center Content */
+        .hero-center {
             text-align: center;
-        }
-        .hero h1 {
-            font-family: var(--font-display);
-            font-size: clamp(60px, 12vw, 160px);
-            font-weight: 700;
-            line-height: 1;
-            letter-spacing: -2px;
-            margin-bottom: 24px;
-            opacity: 0.95;
-        }
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            text-align: left;
+            transform: translateY(-5vh); /* Sedikit naik untuk memberi ruang pada kartu bawah */
         }
-        @media (min-width: 768px) {
-            .hero-content {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: flex-end;
-                text-align: left;
-            }
+
+        .hero-center h1 {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
         }
-        .hero-subtitle {
-            font-size: 16px;
-            max-width: 320px;
+
+        .hero-center p {
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 32px;
             opacity: 0.9;
         }
-        .hero-title-small {
-            font-family: var(--font-display);
-            font-size: clamp(32px, 5vw, 56px);
-            font-weight: 600;
-            line-height: 1.1;
-            max-width: 500px;
-        }
-        .hero-title-small span {
-            color: var(--signal);
-        }
 
-        /* Floating Cards on Hero */
-        .hero-cards {
-            position: absolute;
-            bottom: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 24px;
-            width: 100%;
-            max-width: 1280px;
-            padding: 0 24px;
-            overflow-x: auto;
-        }
-        .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 24px;
-            border-radius: 16px;
-            color: var(--ink);
-            flex: 1;
-            min-width: 280px;
-            box-shadow: 0 12px 32px rgba(16, 27, 45, 0.1);
-        }
-        .stat-card h3 {
-            font-family: var(--font-display);
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-        .stat-card p {
-            font-size: 14px;
-            color: var(--ink-soft);
-        }
-        .stat-card-img {
-            display: flex;
-            gap: 16px;
-        }
-        .stat-card-img img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        /* Sections General */
-        section {
-            padding: 120px 0;
-        }
-        .section-label {
-            font-family: var(--font-display);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: flex;
+        /* Main CTA Button */
+        .btn-main {
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-        .section-label::before {
-            content: "✦";
-            color: var(--signal);
+            gap: 12px;
+            background: var(--white);
+            color: #101B2D;
+            padding: 8px 8px 8px 24px;
+            border-radius: 99px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.3s ease;
         }
 
-        /* Benefits Section */
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 48px;
-        }
-        @media (min-width: 1024px) {
-            .benefits-grid {
-                grid-template-columns: 300px 1fr;
-            }
-        }
-        .benefits-text h2 {
-            font-family: var(--font-display);
-            font-size: clamp(28px, 4vw, 40px);
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: 24px;
-        }
-        .benefits-text p {
-            color: var(--ink-soft);
-            font-size: 18px;
-            margin-bottom: 32px;
-            max-width: 600px;
-        }
-        .feature-cards {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
-            margin-top: 48px;
-        }
-        @media (min-width: 768px) {
-            .feature-cards {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        .feature-card {
-            background: var(--white);
-            border-radius: 24px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-        .feature-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .feature-card-text h4 {
-            font-family: var(--font-display);
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-        .feature-card-text p {
-            color: var(--ink-soft);
-            font-size: 14px;
+        .btn-main:hover {
+            transform: translateY(-2px);
         }
 
-        /* Engineered Section (Two cols, image right) */
-        .engineered-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 64px;
-            align-items: center;
-        }
-        @media (min-width: 1024px) {
-            .engineered-grid {
-                grid-template-columns: 1fr 1.2fr;
-            }
-        }
-        .engineered-content h2 {
-            font-family: var(--font-display);
-            font-size: clamp(28px, 4vw, 36px);
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: 40px;
-        }
-        .mini-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        .mini-card {
-            background: var(--white);
-            padding: 24px;
-            border-radius: 16px;
-        }
-        .mini-card .icon {
-            width: 40px;
-            height: 40px;
-            background: var(--paper);
+        .btn-arrow {
+            background: #0066FF; /* Biru cerah seperti referensi */
+            color: var(--white);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            margin-bottom: 16px;
-            font-size: 18px;
-        }
-        .mini-card h5 {
-            font-family: var(--font-display);
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-        .mini-card p {
-            font-size: 13px;
-            color: var(--ink-soft);
-        }
-        .engineered-image {
-            position: relative;
-        }
-        .engineered-image img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 24px;
+            align-items: center;
         }
 
-        /* Step by step */
-        .steps-container {
-            background: var(--white);
-            border-radius: 32px;
-            padding: 48px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 48px;
-            align-items: center;
+        /* Glassmorphism Bottom Cards */
+        .bottom-cards {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 24px;
+            z-index: 10;
         }
-        @media (min-width: 1024px) {
-            .steps-container {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        .steps-image img {
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 32px;
             width: 100%;
-            height: 400px;
-            object-fit: cover;
+            max-width: 420px;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.1);
         }
-        .step-content {
-            padding: 0 24px;
+
+        .glass-card .icon-box {
+            background: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
         }
-        .step-number {
-            font-family: var(--font-display);
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 16px;
+
+        .glass-card .icon-box svg {
+            width: 20px;
+            height: 20px;
+            fill: #101B2D;
         }
-        .step-content h3 {
+
+        .glass-card h3 {
             font-family: var(--font-display);
             font-size: 24px;
+            font-weight: 500;
             margin-bottom: 16px;
-            text-transform: uppercase;
         }
-        .step-content p {
-            color: var(--ink-soft);
-            font-size: 16px;
-        }
-        
-        /* Footer */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            font-family: var(--font-display);
+
+        .glass-card p {
             font-size: 14px;
-            color: var(--ink-soft);
+            line-height: 1.6;
+            opacity: 0.85;
+        }
+
+        @media (max-width: 900px) {
+            .hero-section {
+                padding: 24px;
+                overflow-y: auto;
+            }
+            .menu-container {
+                display: none; /* Sembunyikan menu pill di mobile */
+            }
+            .bottom-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            .glass-card {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="container nav-inner">
-            <div class="logo">SPASIALINK</div>
-            <div class="nav-links">
-                <a href="#" style="color:white; text-decoration:none;">Layanan</a>
-                <a href="#" style="color:white; text-decoration:none;">Portofolio</a>
-                <a href="#" style="color:white; text-decoration:none;">Cara Kerja</a>
-                <a href="#" style="color:white; text-decoration:none;">Klien</a>
-            </div>
-            <a href="#" class="btn btn-light">Konsultasi Gratis &rarr;</a>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <div class="container">
-            <h1>SPASIALINK</h1>
-            
-            <div class="hero-content">
-                <p class="hero-subtitle">Bukan sekadar peta. Kami membantu Anda mereduksi kerumitan geospasial menjadi strategi yang tajam.</p>
-                <h2 class="hero-title-small">DARI DATA KE <span>KEPUTUSAN</span></h2>
-            </div>
-        </div>
-
-        <div class="hero-cards">
-            <div class="stat-card stat-card-img">
-                <div>
-                    <h3>PENERJEMAH DATA</h3>
-                    <p>Fokus kami pada narasi visual yang mudah dipahami oleh non-teknis (Direksi/Publik).</p>
-                </div>
-            </div>
-            <div class="stat-card stat-card-img">
-                <div>
-                    <h3>TIM AGILE</h3>
-                    <p>Perpaduan data, desain, & riset urban tanpa birokrasi konsultan konvensional yang kaku.</p>
-                </div>
-            </div>
-            <div class="stat-card stat-card-img">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=200&q=80" alt="Dashboard">
-                <div>
-                    <h3>100% VISUAL</h3>
-                    <p>Output berupa dashboard dan presentasi yang siap dieksekusi.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="container" style="margin-top: 60px;">
-        <div class="benefits-grid">
-            <div>
-                <div class="section-label">NILAI TAMBAH KAMI</div>
-            </div>
-            <div class="benefits-text">
-                <h2>Pilih partner yang mengubah data geospasial rumit menjadi cerita visual yang jelas.</h2>
-                <p>Konsultan GIS biasa selesai saat file shapefile dikirimkan. Kami mengantar Anda sampai ke titik keputusan dengan insight lokasi yang fungsional dan terarah.</p>
-                <a href="#" class="btn">Lihat Portofolio Kami &rarr;</a>
-            </div>
-        </div>
-
-        <div class="feature-cards">
-            <div class="feature-card">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Data Visualization">
-                <div class="feature-card-text">
-                    <h4>Bukan Hanya Output, Tapi Arahan</h4>
-                    <p>Visualisasi interaktif yang mempercepat persetujuan lahan bagi Developer atau validasi kebijakan bagi Pemerintah Daerah.</p>
-                </div>
-            </div>
-            <div class="feature-card">
-                <img src="https://images.unsplash.com/photo-1508514177221-188b1ca16e93?auto=format&fit=crop&w=800&q=80" alt="Urban Planning">
-                <div class="feature-card-text">
-                    <h4>Lintas Sektor, Satu Pendekatan</h4>
-                    <p>Metodologi riset urban kami dapat diaplikasikan konsisten mulai dari Startup, UMKM, hingga proyek CSR Korporasi raksasa.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="container">
-        <div class="section-label">FOKUS PADA KEPUTUSAN</div>
+    <section class="hero-section">
         
-        <div class="engineered-grid">
-            <div class="engineered-content">
-                <h2>Kurangi rapat teknis yang panjang. Solusi kami dirancang agar insight lokasi langsung dipahami di level strategis.</h2>
-                <a href="#" class="btn" style="margin-bottom: 40px;">Mulai Konsultasi &rarr;</a>
-                
-                <div class="mini-cards">
-                    <div class="mini-card">
-                        <div class="icon">💡</div>
-                        <h5>BEBAS JARGON</h5>
-                        <p>Menggunakan bahasa manusia, bukan bahasa mesin GIS, sehingga mudah diadopsi oleh C-Level.</p>
-                    </div>
-                    <div class="mini-card">
-                        <div class="icon">⚡</div>
-                        <h5>SOLUTIF</h5>
-                        <p>Fokus kami tidak sekadar mencari akurasi koordinat, tetapi menyusun action plan lokasi bisnis Anda.</p>
-                    </div>
+        <!-- Navbar Area -->
+        <nav>
+            <div class="logo">SPASIALINK</div>
+            
+            <div class="menu-container">
+                <a href="#" class="menu-link active">Beranda</a>
+                <a href="#" class="menu-link">Solusi</a>
+                <a href="#" class="menu-link">Segmen</a>
+                <a href="#" class="menu-link">Tentang Kami</a>
+            </div>
+
+            <div class="nav-right">
+                <button class="btn-menu">Buka Menu</button>
+            </div>
+        </nav>
+
+        <!-- Center Main Content -->
+        <div class="hero-center">
+            <h1>Spasial yang bisa dipahami, bukan cuma dipetakan.</h1>
+            <p>Solusi spasial yang menerjemahkan data menjadi cerita visual yang jelas, handal, dan langsung bisa ditindaklanjuti untuk bisnis Anda.</p>
+            <a href="#" class="btn-main">
+                Mari Bicara Solusi Spasial
+                <div class="btn-arrow">
+                    <!-- Icon Arrow Up Right -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="7" y1="17" x2="17" y2="7"></line>
+                        <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
                 </div>
-            </div>
-            <div class="engineered-image">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=80" alt="SpasiaLink Team">
-            </div>
+            </a>
         </div>
+
+        <!-- Bottom Glassmorphism Cards -->
+        <div class="bottom-cards">
+            
+            <!-- Left Card -->
+            <div class="glass-card">
+                <div class="icon-box">
+                    <!-- Icon Data/Map -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>Penerjemah Data</h3>
+                <p>Mengubah output GIS yang teknis jadi narasi visual yang dipahami orang non-GIS dalam satu kali baca. Membawa Anda dari raw data langsung ke titik keputusan.</p>
+            </div>
+
+            <!-- Right Card -->
+            <div class="glass-card" style="padding-top: 48px;">
+                <h3>Dampak Lintas Sektor</h3>
+                <p>Dari Startup hingga Pemerintah Daerah, pendekatan riset urban kami digunakan secara konsisten untuk mempercepat validasi kebijakan dan keputusan investasi lahan.</p>
+            </div>
+
+        </div>
+
     </section>
-
-    <section class="container">
-        <div class="section-label">CARA KERJA KAMI (STEP BY STEP)</div>
-        <div class="benefits-text">
-            <h2>Dari raw data geospasial hingga strategi operasional dalam satu alur kerja yang kolaboratif.</h2>
-        </div>
-
-        <div class="steps-container">
-            <div class="steps-image">
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80" alt="Initial Consultation">
-            </div>
-            <div class="step-content">
-                <div class="step-number">01</div>
-                <h3>Konsultasi Kebutuhan</h3>
-                <p>Kami menganalisis masalah bisnis atau tata ruang Anda sebelum menyentuh data peta. Langkah ini mengevaluasi variabel skala operasi, tantangan lapangan, dan ekspektasi direksi untuk menentukan arah analisis spasial yang paling efektif.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 SpasiaLink. Memetakan Cerita, Bukan Sekadar Koordinat.</p>
-        </div>
-    </footer>
 
 </body>
 </html>
